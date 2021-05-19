@@ -8,6 +8,9 @@ function init() {
 }
 function resetData(){
     gBoard = [];
+
+    if(gGame.timerInterval)    clearInterval(gGame.timerInterval);
+
     gGame = {
         isOn: true,
         isFirstGuess: true,
@@ -42,7 +45,7 @@ function renderBoard() {
             if (gBoard[i][j].isShown) {
                 if (gBoard[i][j].isMine) {
                     strHTML += MINE;
-                } else if (gBoard[i][j].negMinesCnt) {
+                } else if (!gGame.isFirstGuess) {
                     strHTML += gBoard[i][j].negMinesCnt;
                 }
             }
@@ -96,12 +99,20 @@ function updateNegMinesCnt(row, col) {
 function cellClicked(elCell, i, j) {
     console.log("Clicked", i, j);
     console.log(gBoard[i][j]);
+    console.log(event);
 
     if (!gGame.isOn)    return;
     if (gGame.isFirstGuess) return startGame(elCell, i, j);
+    if (event.altKey) {
+        return markCell(elCell, i, j);
+    }
+    if (gBoard[i][j].isMarked) return;
     if (gBoard[i][j].isMine) return explodeMine(elCell, i, j);
-    if (!gBoard[i][j].negMinesCnt) return expandShown(elCell, i, j);
-    if (gBoard[i][j].negMinesCnt) return revealCnt(elCell, i, j);
+
+    if (!gBoard[i][j].negMinesCnt) expandShown(elCell, i, j);
+    else  revealCnt(elCell, i, j);
+
+    checkWin();
 }
 function startGame(elCell, i, j){
     generateMines(elCell, i, j);
@@ -138,7 +149,7 @@ function lostGame(i, j){
     elCell.classList.add('exploded');
 
     setFace(SAD_FACE);
-    endGame();
+    resetData();
 }
 function revealAllMines(){
     for (var i = 0; i < gLevel.SIZE; i++) {
@@ -148,8 +159,23 @@ function revealAllMines(){
     }
     renderBoard();
 }
-function endGame(){
-    gGame.isOn = false;
-    clearInterval(gGame.timerInterval);
-    resetData();
+function setLevel(level){
+    gLevel = gLevels[level];
+    init();
+}
+function markCell(elCell, i, j){
+    if (gBoard[i][j].isMarked) {
+        gBoard[i][j].isMarked = false;
+        gGame.markedCount--;;
+        elCell.innerHTML = EMPTY;
+    } else {
+        gBoard[i][j].isMarked = true;
+        gGame.markedCount++;
+        elCell.innerHTML = MARK;
+    }
+}
+function checkWin(){
+    if (gLevel.MINES === gGame.markedCount && gLevel.SIZE ** 2 - gGame.markedCount === gGame.shownCount) {
+        setFace(WIN_FACE);
+    }
 }

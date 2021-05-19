@@ -18,6 +18,7 @@ var gBoard = [];
 
 const MINE = '💣'
 const MARK = '🚩'
+const EMPTY = ''
 
 const SAD_FACE = '😧';
 const HAPPY_FACE = '🙂';
