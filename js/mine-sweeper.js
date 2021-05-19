@@ -16,14 +16,7 @@ function buildBoard() {
             };
         }
     }
-    gBoard[2][3].isMine = true;
-    gBoard[1][1].isMine = true;
-    gBoard[2][2].isMine = true;
-    gBoard[5][4].isMine = true;
-    gBoard[2][5].isMine = true;
-    gBoard[4][1].isMine = true;
-    console.table(gBoard);
-    console.log(gBoard);
+    generateMines();
 }
 function renderBoard() {
 
@@ -51,6 +44,19 @@ function renderBoard() {
 
     var elTable = document.querySelector('.board');
     elTable.innerHTML = strHTML;
+}
+function generateMines() {
+    for (var mineCnt = 0; mineCnt < gLevel.MINES; mineCnt++) {
+        while (true) {
+            var i = getRandomInt(0, gLevel.SIZE - 1);
+            var j = getRandomInt(0, gLevel.SIZE - 1);
+            if (!gBoard[i][j].isMine) {
+                gBoard[i][j].isMine = true;
+                console.log(mineCnt, i, j);
+                break;
+            }
+        }
+    }
 }
 function setNegMinesCnt() {
     for (var i = 0; i < gLevel.SIZE; i++) {
@@ -89,7 +95,7 @@ function expandShown(elCell, row, col) {
     for (var i = row - 1; i <= row + 1; i++) {
         for (var j = col - 1; j <= col + 1; j++) {
             if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
-                var elNeg = document.querySelector(getCellId(i,j));
+                var elNeg = document.querySelector(getCellId(i, j));
                 gBoard[i][j].isShown = true;
                 elNeg.innerHTML = gBoard[i][j].negMinesCnt;
             }
