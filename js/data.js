@@ -4,6 +4,7 @@ var gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
+    timerInterval: 0,
     secsPassed: 0,
 };
 var gLevels = [

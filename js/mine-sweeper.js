@@ -16,13 +16,11 @@ function buildBoard() {
             };
         }
     }
-    generateMines();
 }
 function renderBoard() {
 
     var strHTML = '';
 
-    setNegMinesCnt();
 
     console.log(gBoard);
 
@@ -45,11 +43,13 @@ function renderBoard() {
     var elTable = document.querySelector('.board');
     elTable.innerHTML = strHTML;
 }
-function generateMines() {
+function generateMines(elCell, firstI, firstJ) {
     for (var mineCnt = 0; mineCnt < gLevel.MINES; mineCnt++) {
         while (true) {
             var i = getRandomInt(0, gLevel.SIZE - 1);
             var j = getRandomInt(0, gLevel.SIZE - 1);
+            if (i === firstI && j === firstJ) continue;
+
             if (!gBoard[i][j].isMine) {
                 gBoard[i][j].isMine = true;
                 console.log(mineCnt, i, j);
@@ -57,6 +57,10 @@ function generateMines() {
             }
         }
     }
+    gGame.shownCount++;
+    
+    setNegMinesCnt();
+    cellClicked(elCell, firstI, firstJ);
 }
 function setNegMinesCnt() {
     for (var i = 0; i < gLevel.SIZE; i++) {
@@ -79,6 +83,8 @@ function updateNegMinesCnt(row, col) {
 function cellClicked(elCell, i, j) {
     console.log("Clicked", i, j);
     console.log(gBoard[i][j]);
+
+    if (isFirstGuess()) return generateMines(elCell, i, j);
     if (gBoard[i][j].isMine) return explodeMine(elCell, i, j);
     if (!gBoard[i][j].negMinesCnt) return expandShown(elCell, i, j);
     if (gBoard[i][j].negMinesCnt) return revealCnt(elCell, i, j);
@@ -89,6 +95,7 @@ function explodeMine(elCell, i, j) {
 }
 function revealCnt(elCell, i, j) {
     gBoard[i][j].isShown = true;
+    gGame.shownCount++;
     elCell.innerHTML = gBoard[i][j].negMinesCnt;
 }
 function expandShown(elCell, row, col) {
@@ -97,6 +104,7 @@ function expandShown(elCell, row, col) {
             if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
                 var elNeg = document.querySelector(getCellId(i, j));
                 gBoard[i][j].isShown = true;
+                gGame.shownCount++;
                 elNeg.innerHTML = gBoard[i][j].negMinesCnt;
             }
         }
