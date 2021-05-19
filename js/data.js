@@ -2,6 +2,7 @@
 
 var gGame = {
     isOn: false,
+    isFirstGuess: true,
     shownCount: 0,
     markedCount: 0,
     timerInterval: 0,
@@ -17,3 +18,7 @@ var gBoard = [];
 
 const MINE = '💣'
 const MARK = '🚩'
+
+const SAD_FACE = '😧';
+const HAPPY_FACE = '🙂';
+const WIN_FACE = '😎';

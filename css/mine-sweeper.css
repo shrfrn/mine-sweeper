@@ -15,3 +15,12 @@ td{
     height:40px;
     text-align: center;
 }
+.sec-display{
+    margin:auto;
+    color: black;
+    font-size:xx-large;
+    font-family: sans-serif;
+}
+.exploded{
+    background-color: red;
+}
