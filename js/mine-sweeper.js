@@ -167,7 +167,7 @@ function revealCnt(elCell, i, j) {
     gGame.shownCount++;
     updateShown();
     elCell.innerHTML = gBoard[i][j].negMinesCnt;
-    elCell.classList.toggle('td-shown');
+    elCell.classList.add('td-shown');
 }
 function expandShown(elCell, row, col) {
     for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
