@@ -28,7 +28,7 @@ function resetData() {
         timerInterval: 0,
         secsPassed: 0,
         safeClicks: 3,
-        lives: 3,
+        lives: LIVES,
     };
 }
 function buildBoard() {
@@ -222,9 +222,10 @@ function markCell(elCell, i, j) {
 function checkWin() {
 
     var totalCellCnt = gLevel.SIZE ** 2;
+    var minesExploded = LIVES - gGame.lives;
 
-    if (gLevel.MINES === gGame.markedCount &&                       // if the correct number of mines is marked
-        totalCellCnt - gGame.markedCount === gGame.shownCount) {    // and all other cells are revealed
+    if (gGame.markedCount + minesExploded === gLevel.MINES &&   // if the correct number of mines is marked
+        totalCellCnt - gGame.markedCount - minesExploded === gGame.shownCount) {      // and all other cells are revealed
         setFace(WIN_FACE);
         resetData();
     }
