@@ -38,6 +38,12 @@ td {
 td:hover {
   background-color: #fff;
 }
+.td-shown{
+    background-color:slategrey;
+}
+.incorrectly-marked{
+    background-color:darkorange;
+}
 .stat-display {
   color: black;
   background-color: darkgray;
@@ -60,10 +66,12 @@ td:hover {
   height: 60px;
   padding-right: 10px;
   padding-left: 10px;
-  font-size: 40px;
+  font-size: 80px;
   display: inline-block;
   margin: auto;
-  margin-top: 12px;
+  margin-bottom: 30px;
+  background-color: darkseagreen;
+  border-style: none;
 }
 .status-line {
     width: 200 px;

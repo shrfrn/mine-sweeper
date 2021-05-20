@@ -17,7 +17,7 @@ function updateTime(){
 }
 function updateShown(){
     var elSecDisplay = document.querySelector('.shown');
-    elSecDisplay.innerHTML = gGame.shownCount;
+    elSecDisplay.innerHTML = gGame.shownCount - (LIVES - gGame.lives);
 }
 function updateLives(){
     var elLivesDisplay = document.querySelector('.lives');
