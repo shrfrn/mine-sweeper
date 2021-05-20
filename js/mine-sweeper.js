@@ -119,6 +119,7 @@ function cellClicked(elCell, i, j) {
         return markCell(elCell, i, j);
     }
     if (gBoard[i][j].isMarked) return;          // marked cells don't respond to clicks
+    if (gBoard[i][j].isShown ) return;          // re-clicking a shown cell
 
     if (!gRedoing) registerClick(i, j, GUESS);  // register click in the click stack (for undo)
 
@@ -229,7 +230,7 @@ function checkGameEnd() {
     var totalCellCnt = gLevel.SIZE ** 2;
     var minesExploded = LIVES - gGame.lives;
 
-    if (gGame.shownCount - minesExploded + gGame.markedCount + minesExploded === totalCellCnt &&    // all cells exposed
+    if (gGame.shownCount + gGame.markedCount  === totalCellCnt &&    // all cells exposed
         gGame.markedCount + minesExploded > gLevel.MINES) {         // ...but mines are marked that don't exist...
         setFace(SAD_FACE);
         renderBoard();
