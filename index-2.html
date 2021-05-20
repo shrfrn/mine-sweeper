@@ -9,20 +9,20 @@
 </head>
 <body onload="init()">
     <h1>Mine Sweeper...</h1>
-    <div class="top-div">
-        <button class="start-button" onclick="init()"></button>
-        <div class="status-line">
-            <span class="seconds stat-display"></span>
-            <span class="shown stat-display"></span>
-            <span class="lives stat-display"></span>
-        </div>
-        <div class="btn-line">
-            <button onclick="setLevel(0)">4x4</button>
-            <button onclick="setLevel(1)">8x8</button>
-            <button onclick="setLevel(2)">12x12</button>
-            <button class="safe-click-btn" onclick="safeClick()">safeClick</button>
-            <!-- <button class="undo-btn" onclick="undo()">undo</button> -->
-        </div>
+    <div class="status-line">
+        <span class="seconds stat-display"></span>
+        <span>
+            <button class="start-button" onclick="init()"></button>
+        </span>
+        <span class="shown stat-display"></span>
+        <span class="lives stat-display"></span>
+    </div>
+    <div>
+        <button onclick="setLevel(0)">4x4</button>
+        <button onclick="setLevel(1)">8x8</button>
+        <button onclick="setLevel(2)">12x12</button>
+        <button class="safe-click-btn" onclick="safeClick()">safeClick</button>
+        <!-- <button class="undo-btn" onclick="undo()">undo</button> -->
     </div>
     <table>
         <tbody class="board">
