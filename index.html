@@ -8,21 +8,26 @@
     <title>Mine Sweeper</title>
 </head>
 <body onload="init()">
-    <div class="sec-display"></div>
-    <div class="shown-display"></div>
-    <div>
-        <button class="start-button" onclick="init()"></button>
+    <h1>Mine Sweeper...</h1>
+    <div class="status-line">
+        <span class="seconds stat-display"></span>
+        <span>
+            <button class="start-button" onclick="init()"></button>
+        </span>
+        <span class="shown stat-display"></span>
     </div>
     <div>
-        <button onclick="setLevel(0)">16</button>
-        <button onclick="setLevel(1)">64</button>
-        <button onclick="setLevel(2)">144</button>
+        <button onclick="setLevel(0)">4x4</button>
+        <button onclick="setLevel(1)">8x8</button>
+        <button onclick="setLevel(2)">12x12</button>
+        <button class="safe-click-btn" onclick="safeClick()">safeClick</button>
     </div>
     <table>
         <tbody class="board">
 
         </tbody>
     </table>
+    <div><h2>Sharon Frenkel</h2></div>
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/mine-sweeper.js"></script>
