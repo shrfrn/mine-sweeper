@@ -15,12 +15,14 @@
             <button class="start-button" onclick="init()"></button>
         </span>
         <span class="shown stat-display"></span>
+        <span class="lives stat-display"></span>
     </div>
     <div>
         <button onclick="setLevel(0)">4x4</button>
         <button onclick="setLevel(1)">8x8</button>
         <button onclick="setLevel(2)">12x12</button>
         <button class="safe-click-btn" onclick="safeClick()">safeClick</button>
+        <!-- <button class="undo-btn" onclick="undo()">undo</button> -->
     </div>
     <table>
         <tbody class="board">
@@ -32,5 +34,6 @@
     <script src="js/utils.js"></script>
     <script src="js/mine-sweeper.js"></script>
     <script src="js/safe-click.js"></script>
+    <script src="js/undo.js"></script>
 </body>
 </html>

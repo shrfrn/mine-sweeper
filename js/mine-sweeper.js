@@ -6,6 +6,7 @@ function init() {
     buildBoard();
     renderBoard();
     updateTime();
+    updateLives();
     updateSafeClickBtn();
 
     gGame.isOn = true;
@@ -27,6 +28,7 @@ function resetData() {
         timerInterval: 0,
         secsPassed: 0,
         safeClicks: 3,
+        lives: 3,
     };
 }
 function buildBoard() {
@@ -53,6 +55,8 @@ function renderBoard() {
             if (gBoard[i][j].isShown) {
                 if (gBoard[i][j].isMine) {      // if game is lost and mines are now being rendered
                     strHTML += MINE;
+                } else if (gBoard[i][j].isMarked){
+                    strHTML += MARK;
                 } else if (!gGame.isFirstGuess) {
                     strHTML += gBoard[i][j].negMinesCnt;
                 }
@@ -111,7 +115,12 @@ function cellClicked(elCell, i, j) {
     if (event.altKey) {
         return markCell(elCell, i, j);
     }
-    if (gBoard[i][j].isMarked) return;      // marked cells don't respond to clicks
+    if (gBoard[i][j].isMarked) return;          // marked cells don't respond to clicks
+
+    if (!gRedoing) registerClick(i, j, GUESS);  // register click in the click stack (for undo)
+                 
+    console.log(gClickStack);
+
     if (gBoard[i][j].isMine) return explodeMine(elCell, i, j);
 
     if (!gBoard[i][j].negMinesCnt) expandShown(elCell, i, j);   // clicked a cell with no surrounding mines
@@ -138,7 +147,18 @@ function startGame(elCell, i, j) {
 }
 function explodeMine(elCell, i, j) {
     // handle extra lives here
-    lostGame(i, j);
+    registerClick(i, j, EXPLODE);
+
+    gGame.lives--;
+    updateLives();
+
+    if (!gGame.lives)     lostGame(i, j);
+    else                  showMine(elCell, i,j);
+}
+function showMine(elCell, i,j){
+    gBoard[i][j].isShown = true;
+    elCell.innerHTML = MINE;
+    elCell.classList.toggle('exploded');
 }
 function revealCnt(elCell, i, j) {
     gBoard[i][j].isShown = true;
@@ -173,7 +193,8 @@ function lostGame(i, j) {
     elCell.classList.add('exploded');
 
     setFace(SAD_FACE);
-    resetData();
+    if (gGame.timerInterval) clearInterval(gGame.timerInterval);
+    // resetData();
 }
 function revealAllMines() {
     for (var i = 0; i < gLevel.SIZE; i++) {
@@ -189,10 +210,12 @@ function markCell(elCell, i, j) {
         gBoard[i][j].isMarked = false;
         gGame.markedCount--;;
         elCell.innerHTML = EMPTY;
+        registerClick(i, j, MARK_OFF);    // register click in the click stack (for undo)
     } else {
         gBoard[i][j].isMarked = true;
         gGame.markedCount++;
         elCell.innerHTML = MARK;
+        registerClick(i, j, MARK_ON);    // register click in the click stack (for undo)
     }
     checkWin();
 }

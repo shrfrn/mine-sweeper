@@ -16,6 +16,7 @@ var gGame = {
     timerInterval: 0,
     secsPassed: 0,
     safeClicks: 3,
+    lives: 3,
 };
 var gLevels = [
     {SIZE: 4, MINES: 2},

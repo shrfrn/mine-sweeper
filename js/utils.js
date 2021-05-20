@@ -19,6 +19,10 @@ function updateShown(){
     var elSecDisplay = document.querySelector('.shown');
     elSecDisplay.innerHTML = gGame.shownCount;
 }
+function updateLives(){
+    var elLivesDisplay = document.querySelector('.lives');
+    elLivesDisplay.innerHTML = gGame.lives;
+}
 function setFace(face){
     var startBtn = document.querySelector('.start-button');
     startBtn.innerHTML = face;
