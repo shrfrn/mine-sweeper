@@ -6,7 +6,7 @@ function init() {
     buildBoard();
     renderBoard();
     updateTime();
-    updateSafeGuessBtn();
+    updateSafeClickBtn();
 
     gGame.isOn = true;
     

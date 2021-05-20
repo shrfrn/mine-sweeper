@@ -23,10 +23,6 @@ function setFace(face){
     var startBtn = document.querySelector('.start-button');
     startBtn.innerHTML = face;
 }
-function updateSafeGuessBtn(){
-    var elBtn = document.querySelector('.safe-click-btn');
-    elBtn.innerHTML = 'Safe Clicks: ' + gGame.safeClicks;
-}
 function setLevel(level) {
     gLevel = gLevels[level];
     init();
