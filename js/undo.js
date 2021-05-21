@@ -21,6 +21,7 @@ function undo() {
     gGame.shownCount = 0;      // should change to a function which counts the shown cells becaues 1st click may have expanded                 
     gGame.markedCount = 0;
 
+
     var lastClick = gClickStack.pop();           // remove last click from undo stack.
 
     gBoard[lastClick.i][lastClick.j].isShown = false;
@@ -41,15 +42,15 @@ function undo() {
         }
     }
     gRedoing = false;
-    renderBoard();
+    // renderBoard();
 }
 function clearBoardDisplay(){
+
     for (var i = 0; i < gLevel.SIZE; i++) {
         for (var j = 0; j < gLevel.SIZE; j++) {
-            if (i === gClickStack[0].i && j === gClickStack[0].j) continue;     // don't clear first click...
             var elCell = document.querySelector(getCellId(i, j));
             elCell.innerHTML = '';
-            elCell.classList.remove('td-shown');
+            elCell.classList.remove('td-shown', 'exploded');
             gBoard[i][j].isShown = false;
             gBoard[i][j].isMarked = false;
         }
@@ -59,12 +60,12 @@ function restoreMark(elCell, i, j, type) {
     // toggle the mark
     if (type === MARK_ON) {
         gBoard[i][j].isMarked = true;
-        gBoard[i][j].isShown = true;
+        // gBoard[i][j].isShown = true;
         gGame.markedCount++;
         elCell.innerHTML = MARK;
     } else {
         gBoard[i][j].isMarked = false;
-        gBoard[i][j].isShown = false;
+        // gBoard[i][j].isShown = false;
         gGame.markedCount--;;
         elCell.innerHTML = EMPTY;
     }

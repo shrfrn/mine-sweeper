@@ -17,6 +17,7 @@ function init() {
 }
 function resetData() {
     gBoard = [];
+    gClickStack = [];
 
     if (gGame.timerInterval) clearInterval(gGame.timerInterval);
 
@@ -122,7 +123,7 @@ function cellClicked(elCell, i, j) {
     if (gBoard[i][j].isMarked) return;          // marked cells don't respond to clicks
     if (gBoard[i][j].isShown ) return;          // re-clicking a shown cell
 
-    if (!gRedoing) registerClick(i, j, GUESS);  // register click in the click stack (for undo)
+    if (!gRedoing) registerClick(i, j, GUESS);  // if not currently re-doing, register click in the click stack (for undo)
 
     if (gBoard[i][j].isMine) return explodeMine(elCell, i, j);
 
@@ -144,16 +145,16 @@ function cellRightClicked(ev) {
     ev.preventDefault();
 }
 function startGame(elCell, i, j) {
+
     gGame.isOn = true;
     generateMines(elCell, i, j);
     gGame.timerInterval = setInterval(updateTime, 1000);
 }
 function explodeMine(elCell, i, j) {
 
-    registerClick(i, j, EXPLODE);   // register click in the click stack (for undo)
-
+    if(!gRedoing)   gGame.lives--;
+    
     gGame.shownCount++
-    gGame.lives--;
     showMine(elCell, i, j);
     updateLives();
 
