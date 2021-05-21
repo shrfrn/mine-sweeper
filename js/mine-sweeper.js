@@ -54,14 +54,15 @@ function renderBoard() {
             strHTML += `\t<td id="cell-${i}-${j}" contextmenu="rClick(event, this)" onclick="cellClicked(this, ${i}, ${j})">`;
 
             if (!gBoard[i][j].isMine && gBoard[i][j].isMarked) {    // incorrectly marked cell
-                // insert class="incorrectly-marked" before closing >   sorry about this...
-                strHTML = strHTML.substring(0, strHTML.length - 1) + ' class="incorrectly-marked"' + strHTML.substring(strHTML.length - 1);
+                strHTML = insertClass(strHTML, 'incorrectly-marked');
                 strHTML += MARK;
             } else if (gBoard[i][j].isMine) {      // if game is lost and mines are now being rendered
+                if (gBoard[i][j].isShown)     strHTML = insertClass(strHTML, 'exploded'); 
                 strHTML += MINE;
             } else if (gBoard[i][j].isMarked) {
                 strHTML += MARK;
             } else if (!gGame.isFirstGuess) {
+                if (gBoard[i][j].isShown)     strHTML = insertClass(strHTML, 'td-shown'); 
                 strHTML += gBoard[i][j].negMinesCnt;
             }
             strHTML += '</td>\n';
@@ -153,10 +154,10 @@ function explodeMine(elCell, i, j) {
 
     gGame.shownCount++
     gGame.lives--;
+    showMine(elCell, i, j);
     updateLives();
 
     if (!gGame.lives) lostGame(i, j);
-    else showMine(elCell, i, j);
 }
 function showMine(elCell, i, j) {
     gBoard[i][j].isShown = true;
@@ -191,24 +192,14 @@ function expandShown(elCell, row, col) {
     updateShown();
 }
 function lostGame(i, j) {
-    revealAllMines();
 
-    // Mark the exploded mine
-    var elCell = document.querySelector(getCellId(i, j));
-    elCell.classList.add('exploded');
+    renderBoard();
+
+    var elCell = document.querySelector(getCellId(i, j));        // Mark the exploded mine
+    elCell.classList.add('last-exploded');
 
     setFace(SAD_FACE);
     if (gGame.timerInterval) clearInterval(gGame.timerInterval);
-    // resetData();
-}
-function revealAllMines() {
-    for (var i = 0; i < gLevel.SIZE; i++) {
-        for (var j = 0; j < gLevel.SIZE; j++) {
-            if (gBoard[i][j].isMarked && !gBoard[i][j].isMine) gBoard[i][j].isShown = true;
-            if (gBoard[i][j].isMine) gBoard[i][j].isShown = true;
-        }
-    }
-    renderBoard();
 }
 function markCell(elCell, i, j) {
     // toggle the mark

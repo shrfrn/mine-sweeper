@@ -1,8 +1,5 @@
 'use strict';
 
-// function isFirstGuess(){
-//     return gGame.shownCount === 0;
-// }
 function getCellId(i, j){
     return `#cell-${i}-${j}`;
 }
@@ -30,4 +27,7 @@ function setFace(face){
 function setLevel(level) {
     gLevel = gLevels[level];
     init();
+}
+function insertClass(strHTML, className){
+    return strHTML.substring(0, strHTML.length - 1) + ` class="${className}"` + strHTML.substring(strHTML.length - 1);
 }

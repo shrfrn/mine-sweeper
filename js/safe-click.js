@@ -33,7 +33,7 @@ function findRandEmptyCell(){
             }
         }
     }
-    if (!emptyCells.length) return;             // no empty cells
+    if (!emptyCells.length) return;             // no empty cells - this shouldn't happen. game should have ended
     
     var idx = getRandomInt(0, emptyCells.length - 1);
     gSafeCell = document.querySelector(getCellId(emptyCells[idx].i, emptyCells[idx].j));

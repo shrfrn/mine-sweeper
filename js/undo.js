@@ -18,7 +18,7 @@ function undo() {
 
     clearBoardDisplay();                        // reset display.
 
-    gGame.shownCount = 0;                       
+    gGame.shownCount = 0;      // should change to a function which counts the shown cells becaues 1st click may have expanded                 
     gGame.markedCount = 0;
 
     var lastClick = gClickStack.pop();           // remove last click from undo stack.
@@ -46,9 +46,10 @@ function undo() {
 function clearBoardDisplay(){
     for (var i = 0; i < gLevel.SIZE; i++) {
         for (var j = 0; j < gLevel.SIZE; j++) {
-            if (i === gClickStack[0].i && j === gClickStack[0].j) continue;
+            if (i === gClickStack[0].i && j === gClickStack[0].j) continue;     // don't clear first click...
             var elCell = document.querySelector(getCellId(i, j));
             elCell.innerHTML = '';
+            elCell.classList.remove('td-shown');
             gBoard[i][j].isShown = false;
             gBoard[i][j].isMarked = false;
         }

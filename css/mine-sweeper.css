@@ -38,11 +38,11 @@ td {
 td:hover {
   background-color: #fff;
 }
-.td-shown{
-    background-color:slategrey;
+.td-shown {
+  background-color: slategrey;
 }
-.incorrectly-marked{
-    background-color:darkorange;
+.incorrectly-marked {
+  background-color: darkorange;
 }
 .stat-display {
   color: black;
@@ -57,10 +57,16 @@ td:hover {
 .exploded {
   background-color: red;
 }
-.top-div{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+.last-exploded {
+  background-color: red;
+  border:black;
+  border-style:dashed;
+  border-width: 4px;
+}
+.top-div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 .start-button {
   height: 60px;
@@ -74,15 +80,14 @@ td:hover {
   border-style: none;
 }
 .status-line {
-    width: 200 px;
-    margin: auto;
-    text-align: center;
-    margin-top: 12px;
+  width: 200 px;
+  margin: auto;
+  text-align: center;
+  margin-top: 12px;
 }
 .btn-line {
-    width: 200 px;
-    margin: auto;
-    text-align: center;
-    margin-top: 12px;
-  }
-  
+  width: 200 px;
+  margin: auto;
+  text-align: center;
+  margin-top: 12px;
+}
