@@ -58,12 +58,12 @@ function renderBoard() {
                 strHTML = insertClass(strHTML, 'incorrectly-marked');
                 strHTML += MARK;
             } else if (gBoard[i][j].isMine) {      // if game is lost and mines are now being rendered
-                if (gBoard[i][j].isShown)     strHTML = insertClass(strHTML, 'exploded'); 
+                if (gBoard[i][j].isShown) strHTML = insertClass(strHTML, 'exploded');
                 strHTML += MINE;
             } else if (gBoard[i][j].isMarked) {
                 strHTML += MARK;
             } else if (!gGame.isFirstGuess) {
-                if (gBoard[i][j].isShown)     strHTML = insertClass(strHTML, 'td-shown'); 
+                if (gBoard[i][j].isShown) strHTML = insertClass(strHTML, 'td-shown');
                 strHTML += gBoard[i][j].negMinesCnt;
             }
             strHTML += '</td>\n';
@@ -113,15 +113,19 @@ function updateNegMinesCnt(row, col) {
         }
     }
 }
-function cellClicked(elCell, i, j) {
+function cellClicked(elCell, i, j, type = '') {
 
     if (!gGame.isOn) return;
     if (gGame.isFirstGuess) return startGame(elCell, i, j);
-    if (event.altKey) {
-        return markCell(elCell, i, j);
+    if (event.altKey || type === AUTO_COMPLETE) {
+        if (gBoard[i][j].isShown && countNegMinesAndMarks(i, j) >= gBoard[i][j].negMinesCnt) {
+            expandShown(elCell, i, j)
+            if(!gRedoing) registerClick(i, j, AUTO_COMPLETE);
+        }
+        return;
     }
     if (gBoard[i][j].isMarked) return;          // marked cells don't respond to clicks
-    if (gBoard[i][j].isShown ) return;          // re-clicking a shown cell
+    if (gBoard[i][j].isShown) return;          // re-clicking a shown cell
 
     if (!gRedoing) registerClick(i, j, GUESS);  // if not currently re-doing, register click in the click stack (for undo)
 
@@ -152,7 +156,7 @@ function startGame(elCell, i, j) {
 }
 function explodeMine(elCell, i, j) {
 
-    if(!gRedoing)   gGame.lives--;
+    if (!gRedoing) gGame.lives--;
 
     gGame.shownCount++
     showMine(elCell, i, j);
@@ -169,18 +173,19 @@ function revealCnt(elCell, i, j) {
     gBoard[i][j].isShown = true;
     gGame.shownCount++;
     updateShown();
-    elCell.innerHTML = gBoard[i][j].negMinesCnt;
-    elCell.classList.add('td-shown');
+    if (gBoard[i][j].isMine) {
+        explodeMine(elCell, i, j);
+    } else {
+        elCell.innerHTML = gBoard[i][j].negMinesCnt;
+        elCell.classList.add('td-shown');
+    }
 }
 function expandShown(elCell, row, col) {
-    
-    // revealCnt(elCell, row, col);                    // reveal current cell
 
     for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
         for (var j = col - 1; j <= col + 1; j++) {
             if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
 
-                // if (i === row && j === col) continue;
                 if (gBoard[i][j].isShown || gBoard[i][j].isMarked) continue;
 
                 var elNeg = document.querySelector(getCellId(i, j));
@@ -217,12 +222,25 @@ function markCell(elCell, i, j) {
     }
     checkGameEnd();
 }
+function countNegMinesAndMarks(row, col) {
+    var cnt = 0;
+    for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
+        for (var j = col - 1; j <= col + 1; j++) {
+            if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
+                if (gBoard[i][j].isMine && gBoard[i][j].isShown || gBoard[i][j].isMarked) {
+                    cnt++;
+                }
+            }
+        }
+    }
+    return cnt;
+}
 function checkGameEnd() {
 
     var totalCellCnt = gLevel.SIZE ** 2;
     var minesExploded = LIVES - gGame.lives;
 
-    if (gGame.shownCount + gGame.markedCount  === totalCellCnt &&    // all cells exposed
+    if (gGame.shownCount + gGame.markedCount === totalCellCnt &&    // all cells exposed
         gGame.markedCount + minesExploded > gLevel.MINES) {         // ...but mines are marked that don't exist...
         setFace(SAD_FACE);
         renderBoard();

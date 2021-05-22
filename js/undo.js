@@ -3,7 +3,7 @@
 const GUESS = 'Guess';
 const MARK_ON = 'Mark';
 const MARK_OFF = 'Unmark';
-// const EXPLODE = 'Explode';
+const AUTO_COMPLETE = 'Auto complete'
 
 var gRedoing = false;
 var gClickStack = [];
@@ -32,12 +32,14 @@ function undo() {
         var elCell = document.querySelector(getCellId(gClickStack[i].i, gClickStack[i].j));
 
         switch (gClickStack[i].type) {
+            case AUTO_COMPLETE:
+                cellClicked(elCell, gClickStack[i].i, gClickStack[i].j, AUTO_COMPLETE);
             case GUESS:
-                cellClicked(elCell, gClickStack[i].i, gClickStack[i].j)
+                cellClicked(elCell, gClickStack[i].i, gClickStack[i].j);
                 break;
             case MARK_ON:
             case MARK_OFF:
-                restoreMark(elCell, gClickStack[i].i, gClickStack[i].j, gClickStack[i].type)
+                restoreMark(elCell, gClickStack[i].i, gClickStack[i].j, gClickStack[i].type);
                 break;
         }
     }
