@@ -1,9 +1,9 @@
 'use strict';
 
-const GUESS = 'Click';
+const GUESS = 'Guess';
 const MARK_ON = 'Mark';
 const MARK_OFF = 'Unmark';
-const EXPLODE = 'Explode';
+// const EXPLODE = 'Explode';
 
 var gRedoing = false;
 var gClickStack = [];
@@ -14,7 +14,7 @@ function registerClick(i, j, type) {
 }
 function undo() {
     
-    if (gClickStack.length === 1)   return;     // can't undo first move.
+    if (gClickStack.length <= 1)   return;      // can't undo first move or before game started.
 
     clearBoardDisplay();                        // reset display.
 

@@ -153,11 +153,11 @@ function startGame(elCell, i, j) {
 function explodeMine(elCell, i, j) {
 
     if(!gRedoing)   gGame.lives--;
-    
+
     gGame.shownCount++
     showMine(elCell, i, j);
     updateLives();
-
+    updateShown();
     if (!gGame.lives) lostGame(i, j);
 }
 function showMine(elCell, i, j) {
@@ -173,20 +173,20 @@ function revealCnt(elCell, i, j) {
     elCell.classList.add('td-shown');
 }
 function expandShown(elCell, row, col) {
+    
+    // revealCnt(elCell, row, col);                    // reveal current cell
+
     for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
         for (var j = col - 1; j <= col + 1; j++) {
             if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
 
+                // if (i === row && j === col) continue;
                 if (gBoard[i][j].isShown || gBoard[i][j].isMarked) continue;
 
-                gBoard[i][j].isShown = true;
-                gGame.shownCount++;
-
-                if (gBoard[i][j].negMinesCnt === 0) expandShown(elCell, i, j);
-
                 var elNeg = document.querySelector(getCellId(i, j));
-                elNeg.innerHTML = gBoard[i][j].negMinesCnt;
-                elNeg.classList.toggle('td-shown');
+                revealCnt(elNeg, i, j);             // reveal neighbor
+
+                if (gBoard[i][j].negMinesCnt === 0) expandShown(elNeg, i, j);   // if neighbor has no surrounding mines...
             }
         }
     }
