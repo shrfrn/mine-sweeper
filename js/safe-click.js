@@ -12,8 +12,11 @@ function updateSafeClicks(){
 }
 function safeClick(){
 
-    if (gGame.isFirstGuess) return; // first guess is inherently safe. no meed to waist...
     if (!gGame.safeClicks) return;  // no more safe guesses...
+    if (gGame.isFirstGuess) return; // first guess is inherently safe. no meed to waist...
+    if (gHint.isHintDisplayed || gHint.isHintSelection) return;     // can't show safe click while in hint mode.
+    if (gGame.isBuildMode)  return; // can't show safe click while in build mode.
+
 
     findRandEmptyCell();
     if (!gSafeCell) return;

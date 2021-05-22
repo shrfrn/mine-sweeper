@@ -20,6 +20,7 @@
             <button onclick="setLevel(0)">4x4</button>
             <button onclick="setLevel(1)">8x8</button>
             <button onclick="setLevel(2)">12x12</button>
+            <button class="build-btn" onclick="toggleBuildMode()">Build</button>
             <button class="safe-click-btn" onclick="safeClick()">safeClick</button>
             <button class="hint-btn" onclick="selectHintCell()">hints</button>
             <button class="undo-btn" onclick="undo()">undo</button>
@@ -30,10 +31,14 @@
 
         </tbody>
     </table>
-    <div><h2>Sharon Frenkel</h2><h2 class='top-score'>No Top Score Yet...</h2></div>
+    <div>
+        <h2>by Sharon Frenkel</h2>
+        <h2 class='top-score'>No Top Score Yet...</h2>
+    </div>
     <script src="js/safe-click.js"></script>
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/build-mode.js"></script>
     <script src="js/hint.js"></script>
     <script src="js/mine-sweeper.js"></script>
     <script src="js/undo.js"></script>

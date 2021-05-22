@@ -19,6 +19,8 @@ var gGame = {
     secsPassed: 0,
     safeClicks: SAFE_CLICKS,
     lives: LIVES,
+    isBuildMode: false,
+    mineCount: 0,
 };
 var gLevels = [
     {SIZE: 4, MINES: 2, topScore: -1},

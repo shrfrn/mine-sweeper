@@ -6,13 +6,14 @@ h1 {
   text-align: center;
   font-size: 60px;
   font-weight: 400;
+  margin-bottom: 6px;
 }
 h2 {
   text-align: center;
   font-size: 40px;
   font-family: sans-serif;
   font-weight: 300;
-  background-color: darkslateblue;
+  background-color:rgb(226, 202, 123);
 }
 .board {
   background-color: darkgray;
@@ -77,6 +78,7 @@ td:hover {
   display: inline-block;
   margin: auto;
   margin-bottom: 30px;
+  margin-bottom: 30px;
   background-color: darkseagreen;
   border-style: none;
 }
@@ -95,4 +97,7 @@ td:hover {
 .new-record{
   color:white;
   font-weight: 400;
+}
+.build-mode{
+  background-color:greenyellow;
 }

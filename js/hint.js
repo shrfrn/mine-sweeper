@@ -18,7 +18,18 @@ function resetHints(){
     gHint.hintJ = -1;
 }
 function selectHintCell(){
+    if(!gHint.hints || gGame.isFirstGuess)    return;   // out of hints or mines not laid yet.
+    if (gGame.isBuildMode)  return; // can't show safe click while in build mode.
+
+    if (gHint.isHintSelection) {    // if already in hint selection mode, turn it off.
+        gHint.isHintSelection = false;
+        toggleHintModeDisplay();
+        return;
+    }
+
     gHint.isHintSelection = true;
+
+    toggleHintModeDisplay();
 }
 function showHint(row, col){
 
@@ -59,4 +70,16 @@ function hideHint(){
     gHint.hintI = -1;
     gHint.hintJ = -1;
     gHint.isHintDisplayed = false;
+    
+    gHint.hints--;
+    updateHints();
+    toggleHintModeDisplay();    
+}
+function updateHints(){
+    var elLivesDisplay = document.querySelector('.hint-btn');
+    elLivesDisplay.innerHTML = 'Hints: ' + gHint.hints;
+}
+function toggleHintModeDisplay(){
+    var elHintBtn = document.querySelector('.hint-btn');
+    elHintBtn.classList.toggle('td-hint');
 }

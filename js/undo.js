@@ -15,6 +15,8 @@ function registerClick(i, j, type) {
 function undo() {
     
     if (gClickStack.length <= 1)   return;      // can't undo first move or before game started.
+    if (gHint.isHintDisplayed || gHint.isHintSelection) return;     // can't undo while in hint mode.
+    if (gGame.isBuildMode)  return; // can't undo while in build mode.
 
     clearBoardDisplay();                        // reset display.
 
@@ -45,18 +47,6 @@ function undo() {
     }
     gRedoing = false;
     // renderBoard();
-}
-function clearBoardDisplay(){
-
-    for (var i = 0; i < gLevel.SIZE; i++) {
-        for (var j = 0; j < gLevel.SIZE; j++) {
-            var elCell = document.querySelector(getCellId(i, j));
-            elCell.innerHTML = '';
-            elCell.classList.remove('td-shown', 'exploded');
-            gBoard[i][j].isShown = false;
-            gBoard[i][j].isMarked = false;
-        }
-    }
 }
 function restoreMark(elCell, i, j, type) {
     // toggle the mark

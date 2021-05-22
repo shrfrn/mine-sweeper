@@ -31,5 +31,5 @@ function showTopScore(){
     var elTopScore = document.querySelector('.top-score');
 
     if (!gLevel.topScore) elTopScore.innerHTML = 'No Score Yet... Be the First!';
-    else                  elTopScore.innerHTML = gLevel.topScore;
+    else                  elTopScore.innerHTML = 'Top Score: ' + gLevel.topScore;
 }

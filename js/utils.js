@@ -1,6 +1,6 @@
 'use strict';
 
-function getCellId(i, j){
+function getCellId(i, j) {
     return `#cell-${i}-${j}`;
 }
 function getRandomInt(min, max) {
@@ -8,24 +8,20 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
-function updateTime(){
+function updateTime() {
     var elSecDisplay = document.querySelector('.seconds');
     elSecDisplay.innerHTML = gGame.secsPassed++;
 }
-function updateShown(){
+function updateShown() {
     var elSecDisplay = document.querySelector('.shown');
     // elSecDisplay.innerHTML = gGame.shownCount - (LIVES - gGame.lives);
     elSecDisplay.innerHTML = gGame.shownCount;
 }
-function updateLives(){
+function updateLives() {
     var elLivesDisplay = document.querySelector('.lives');
     elLivesDisplay.innerHTML = gGame.lives;
 }
-function updateHints(){
-    var elLivesDisplay = document.querySelector('.hint-btn');
-    elLivesDisplay.innerHTML = gHint.hints;
-}
-function setFace(face){
+function setFace(face) {
     var startBtn = document.querySelector('.start-button');
     startBtn.innerHTML = face;
 }
@@ -33,6 +29,18 @@ function setLevel(level) {
     gLevel = gLevels[level];
     init();
 }
-function insertClass(strHTML, className){
+function insertClass(strHTML, className) {
     return strHTML.substring(0, strHTML.length - 1) + ` class="${className}"` + strHTML.substring(strHTML.length - 1);
+}
+function clearBoardDisplay() {
+
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            var elCell = document.querySelector(getCellId(i, j));
+            elCell.innerHTML = '';
+            elCell.classList.remove('td-shown', 'exploded', 'last-exploded');
+            gBoard[i][j].isShown = false;
+            gBoard[i][j].isMarked = false;
+        }
+    }
 }

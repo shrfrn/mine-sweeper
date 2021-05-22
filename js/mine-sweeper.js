@@ -34,6 +34,8 @@ function resetData() {
         secsPassed: 0,
         safeClicks: SAFE_CLICKS,
         lives: LIVES,
+        isBuildMode: false,
+        mineCount: gLevel.MINES,
     };
     resetHints();
 }
@@ -120,8 +122,10 @@ function updateNegMinesCnt(row, col) {
 }
 function cellClicked(elCell, i, j, type = '') {
 
+    if (gGame.isBuildMode) return layMine(elCell, i, j);
     if (!gGame.isOn) return;
     if (gGame.isFirstGuess) return startGame(elCell, i, j);
+    if (gHint.isHintDisplayed) return;  // don't respond to clicks while hint is displayed.
     if (gHint.isHintSelection) return showHint(i,j);
 
     if (event.altKey || type === AUTO_COMPLETE) {
@@ -160,7 +164,7 @@ function cellRightClicked(ev) {
 function startGame(elCell, i, j) {
 
     gGame.isOn = true;
-    generateMines(elCell, i, j);
+    if (!gGame.isBuildMode)    generateMines(elCell, i, j);
     gGame.timerInterval = setInterval(updateTime, 1000);
 }
 function explodeMine(elCell, i, j) {
@@ -264,12 +268,12 @@ function checkGameEnd() {
     var minesExploded = LIVES - gGame.lives;
 
     if (gGame.shownCount + gGame.markedCount === totalCellCnt &&    // all cells exposed
-        gGame.markedCount + minesExploded > gLevel.MINES) {         // ...but mines are marked that don't exist...
+        gGame.markedCount + minesExploded > gGame.mineCount) {         // ...but mines are marked that don't exist...
         setFace(SAD_FACE);
         renderBoard();
         resetData();
     }
-    if (gGame.markedCount + minesExploded === gLevel.MINES &&   // if the correct number of mines is marked
+    if (gGame.markedCount + minesExploded === gGame.mineCount &&   // if the correct number of mines is marked
         totalCellCnt - gGame.markedCount - minesExploded === gGame.shownCount - minesExploded) {      // and all other cells are revealed
         setFace(WIN_FACE);
         updateTopScore();
