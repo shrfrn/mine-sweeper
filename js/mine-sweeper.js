@@ -1,14 +1,17 @@
 'use strict';
 
 function init() {
-    setFace(HAPPY_FACE);
     resetData();
     buildBoard();
     renderBoard();
+
+    setFace(HAPPY_FACE);
     updateTime();
     updateLives();
     updateHints();
     updateSafeClicks();
+    loadTopScores();
+    showTopScore();
 
     gGame.isOn = true;
 
@@ -269,6 +272,7 @@ function checkGameEnd() {
     if (gGame.markedCount + minesExploded === gLevel.MINES &&   // if the correct number of mines is marked
         totalCellCnt - gGame.markedCount - minesExploded === gGame.shownCount - minesExploded) {      // and all other cells are revealed
         setFace(WIN_FACE);
+        updateTopScore();
         resetData();
     }
 }

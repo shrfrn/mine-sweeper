@@ -21,9 +21,9 @@ var gGame = {
     lives: LIVES,
 };
 var gLevels = [
-    {SIZE: 4, MINES: 2},
-    {SIZE: 8, MINES: 12},
-    {SIZE: 12, MINES: 30},
+    {SIZE: 4, MINES: 2, topScore: -1},
+    {SIZE: 8, MINES: 12, topScore: -1},
+    {SIZE: 12, MINES: 30, topScore: -1},
 ];
 var gLevel = gLevels[1];
 var gBoard = [];
