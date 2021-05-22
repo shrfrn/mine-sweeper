@@ -7,7 +7,8 @@ function init() {
     renderBoard();
     updateTime();
     updateLives();
-    updateSafeClickBtn();
+    updateHints();
+    updateSafeClicks();
 
     gGame.isOn = true;
 
@@ -28,9 +29,10 @@ function resetData() {
         markedCount: 0,
         timerInterval: 0,
         secsPassed: 0,
-        safeClicks: 3,
+        safeClicks: SAFE_CLICKS,
         lives: LIVES,
     };
+    resetHints();
 }
 function buildBoard() {
     for (var i = 0; i < gLevel.SIZE; i++) {
@@ -117,9 +119,13 @@ function cellClicked(elCell, i, j, type = '') {
 
     if (!gGame.isOn) return;
     if (gGame.isFirstGuess) return startGame(elCell, i, j);
+    if (gHint.isHintSelection) return showHint(i,j);
+
     if (event.altKey || type === AUTO_COMPLETE) {
+        if (allNegsShown(i,j)) return;
         if (gBoard[i][j].isShown && countNegMinesAndMarks(i, j) >= gBoard[i][j].negMinesCnt) {
             expandShown(elCell, i, j)
+            checkGameEnd();
             if(!gRedoing) registerClick(i, j, AUTO_COMPLETE);
         }
         return;
@@ -173,12 +179,12 @@ function revealCnt(elCell, i, j) {
     gBoard[i][j].isShown = true;
     gGame.shownCount++;
     updateShown();
-    if (gBoard[i][j].isMine) {
-        explodeMine(elCell, i, j);
-    } else {
+    // if (gBoard[i][j].isMine) {
+    //     explodeMine(elCell, i, j);
+    // } else {
         elCell.innerHTML = gBoard[i][j].negMinesCnt;
         elCell.classList.add('td-shown');
-    }
+    // }
 }
 function expandShown(elCell, row, col) {
 
@@ -226,6 +232,7 @@ function countNegMinesAndMarks(row, col) {
     var cnt = 0;
     for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
         for (var j = col - 1; j <= col + 1; j++) {
+            if (i === row && j === col) continue;
             if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
                 if (gBoard[i][j].isMine && gBoard[i][j].isShown || gBoard[i][j].isMarked) {
                     cnt++;
@@ -234,6 +241,19 @@ function countNegMinesAndMarks(row, col) {
         }
     }
     return cnt;
+}
+function allNegsShown(row, col){
+    for (var i = row - 1; i <= row + 1; i++) {      // neighbor loop
+        for (var j = col - 1; j <= col + 1; j++) {
+            if (i >= 0 && i < gLevel.SIZE && j >= 0 && j < gLevel.SIZE) {
+                if (i === row && j === col) continue;
+                if (!gBoard[i][j].isShown && !gBoard[i][j].isMarked) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 function checkGameEnd() {
 

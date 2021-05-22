@@ -1,9 +1,11 @@
 'use strict';
 
+const SAFE_CLICKS = 3;
+
 var gSafeCell = null;
 var gTimeOutHandler = 0;
 
-function updateSafeClickBtn(){
+function updateSafeClicks(){
 
     var elBtn = document.querySelector('.safe-click-btn');
     elBtn.innerHTML = 'Safe Clicks: ' + gGame.safeClicks;
@@ -17,7 +19,7 @@ function safeClick(){
     if (!gSafeCell) return;
 
     gGame.safeClicks--;
-    updateSafeClickBtn();
+    updateSafeClicks();
 
     gSafeCell.classList.toggle('safe-cell');
     gTimeOutHandler = setTimeout(hideSafeCell, 2000);

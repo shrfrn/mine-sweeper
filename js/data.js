@@ -17,7 +17,7 @@ var gGame = {
     markedCount: 0,
     timerInterval: 0,
     secsPassed: 0,
-    safeClicks: 3,
+    safeClicks: SAFE_CLICKS,
     lives: LIVES,
 };
 var gLevels = [
